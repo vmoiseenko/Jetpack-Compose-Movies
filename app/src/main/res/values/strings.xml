@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">Jet Movies</string>
+    <string name="app_name">Movies Compose</string>
+    <string name="placeholder_search">Search</string>
+
+    <string name="movies.details_storyline">Storyline:</string>
+    <string name="movies.details_runtime">"%sh %smin"</string>
+    <string name="movies.details_production">Production</string>
+    <string name="movies.details_director">Director</string>
+    <string name="movies.details_screenplay">Screenplay</string>
+    <string name="movies.details_cast">Cast</string>
+    <string name="movies.details_not_available">N/A</string>
+    <string name="movies.details_added_to_fav">Added to favorites</string>
+    <string name="movies.details_removed_from_fav">Removed from favorites</string>
 </resources>
