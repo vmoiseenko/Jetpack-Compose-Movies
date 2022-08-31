@@ -28,7 +28,12 @@ android {
         }
     }
     buildTypes.each {
-        it.buildConfigField 'String', 'TheMovieDbAPIKey', TheMovieDbAPIKey
+        def Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        defaultConfig {
+            it.buildConfigField 'String', "TheMovieDbAPIKey", properties.getProperty("TheMovieDbAPIKey", "")
+        }
     }
 
     compileOptions {

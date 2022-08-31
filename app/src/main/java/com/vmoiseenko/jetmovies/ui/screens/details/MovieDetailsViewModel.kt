@@ -2,9 +2,11 @@ package com.vmoiseenko.jetmovies.ui.screens.details
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.vmoiseenko.jetmovies.R
 import com.vmoiseenko.jetmovies.domain.repository.FavoriteRepository
 import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
 import com.vmoiseenko.jetmovies.ui.screens.base.BaseViewModel
+import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsContract.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -20,8 +22,6 @@ class MovieDetailsViewModel @Inject constructor(
     private val viewModelState =
         MutableStateFlow<MovieDetailsContract.UiState>(MovieDetailsContract.UiState.Loading)
 
-    private var job: Job? = null
-
     // UI state exposed to the UI
     val uiState = viewModelState
         .stateIn(
@@ -30,6 +30,9 @@ class MovieDetailsViewModel @Inject constructor(
             MovieDetailsContract.UiState.Loading
         )
 
+    // UI events exposed to the UI
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     fun getMovies(id: Int) {
         viewModelScope.launch {
@@ -49,13 +52,20 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    fun favoriteEvent(id: Int, isAdd: Boolean) {
-        if(isAdd) {
+    fun favoriteButtonClicked(id: Int, isAdd: Boolean) {
+        val message: Int = if(isAdd) {
             Log.d("DEBUG", "Add to FAV clicked $id")
             favoriteRepository.addToFavorite(id)
+            R.string.movies_details_added_to_fav
         } else {
             Log.d("DEBUG", "Remove from FAV $id")
             favoriteRepository.removeFromFavorite(id)
+            R.string.movies_details_removed_from_fav
+        }
+        viewModelScope.launch {
+            _eventFlow.emit(
+                UiEvent.ShowSnackbar(message)
+            )
         }
     }
 
