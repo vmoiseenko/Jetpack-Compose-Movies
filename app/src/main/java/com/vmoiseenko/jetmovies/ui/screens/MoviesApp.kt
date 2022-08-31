@@ -10,9 +10,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.vmoiseenko.jetmovies.ui.components.MyBottomNavigation
+import com.vmoiseenko.jetmovies.ui.navigation.Favorites
 import com.vmoiseenko.jetmovies.ui.navigation.MovieDetails
 import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
+import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
 import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 
@@ -25,7 +28,14 @@ fun MoviesApp() {
         val currentDestination = currentBackStack?.destination
         val currentScreen = Movies
 
-        Scaffold() { innerPadding ->
+        Scaffold(
+            bottomBar = {
+                MyBottomNavigation(
+                    { navController.navigateSingleTopTo(Movies.route) },
+                    { navController.navigateSingleTopTo(Favorites.route) }
+                )
+            }
+        ) { innerPadding ->
             MoviesNavHost(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding)
@@ -50,6 +60,9 @@ fun MoviesNavHost(
                     navController.navigateToMovieDetails(it)
                 }
             )
+        }
+        composable(route = Favorites.route) {
+            FavoritesScreen()
         }
         composable(
             route = MovieDetails.routeWithArgs,

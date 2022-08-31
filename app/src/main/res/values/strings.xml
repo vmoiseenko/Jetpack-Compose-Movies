@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Movies Compose</string>
     <string name="placeholder_search">Search</string>
+    <string name="placeholder_home">Home</string>
+    <string name="placeholder_favorites">Favorites</string>
 
     <string name="movies.details_storyline">Storyline:</string>
     <string name="movies.details_runtime">"%sh %smin"</string>

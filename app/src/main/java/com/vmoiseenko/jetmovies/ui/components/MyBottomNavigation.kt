@@ -5,34 +5,58 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Spa
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.vmoiseenko.jetmovies.ui.theme.BottomBackgroundColor
+import com.vmoiseenko.jetmovies.R
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
+import com.vmoiseenko.jetmovies.ui.theme.MoviePrimaryLightColor
+
 
 @Composable
-fun MyBottomNavigation() {
+fun MyBottomNavigation(
+    onHomeClick: () -> Unit,
+    onFavoritesClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     BottomNavigation(
-        backgroundColor = BottomBackgroundColor
+        modifier = modifier,
+        backgroundColor = MoviePrimaryLightColor
     ) {
         BottomNavigationItem(
             icon = {
-                Icon(imageVector = Icons.Default.Spa, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.Spa,
+                    tint = Color.White,
+                    contentDescription = null
+                )
             },
             label = {
-                Text(text = "Home")
+                Text(
+                    text = stringResource(id = R.string.placeholder_home),
+                    color = Color.White
+                )
             },
             selected = true,
-            onClick = { /*TODO*/ }
+            onClick = { onHomeClick() }
         )
         BottomNavigationItem(
             icon = {
-                Icon(imageVector = Icons.Default.AccountCircle, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.AccountCircle,
+                    tint = Color.White,
+                    contentDescription = null
+                )
             },
             label = {
-                Text(text = "Profile")
+                Text(
+                    text = stringResource(id = R.string.placeholder_favorites),
+                    color = Color.White
+                )
             },
             selected = true,
-            onClick = { /*TODO*/ }
+            onClick = { onFavoritesClick() }
         )
     }
 }
@@ -42,7 +66,7 @@ fun MyBottomNavigation() {
 fun PreviewMyBottomNavigation() {
     JetMoviesTheme() {
         Surface() {
-            MyBottomNavigation()
+            MyBottomNavigation({}, {})
         }
     }
 }

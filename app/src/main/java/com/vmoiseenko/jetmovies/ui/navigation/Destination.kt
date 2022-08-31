@@ -7,11 +7,15 @@ interface Destination {
     val route: String
 }
 
-object Movies: Destination {
+object Movies : Destination {
     override val route = "movies"
 }
 
-object MovieDetails: Destination {
+object Favorites : Destination {
+    override val route = "favorites"
+}
+
+object MovieDetails : Destination {
     override val route = "movieDetails"
     const val movieId = "movie_id"
     val routeWithArgs = "${route}/{${movieId}}"
