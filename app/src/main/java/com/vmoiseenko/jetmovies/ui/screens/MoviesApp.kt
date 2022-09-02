@@ -25,15 +25,17 @@ fun MoviesApp() {
         val navController = rememberNavController()
 
         val currentBackStack by navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStack?.destination
+        val currentDestination = currentBackStack?.destination?.route ?: Movies.route
         val currentScreen = Movies
 
         Scaffold(
             bottomBar = {
-                MyBottomNavigation(
-                    { navController.navigateSingleTopTo(Movies.route) },
-                    { navController.navigateSingleTopTo(Favorites.route) }
-                )
+                if (listOf(Movies.route, Favorites.route).contains(currentDestination)) {
+                    MyBottomNavigation(
+                        { navController.navigateSingleTopTo(Movies.route) },
+                        { navController.navigateSingleTopTo(Favorites.route) }
+                    )
+                }
             }
         ) { innerPadding ->
             MoviesNavHost(

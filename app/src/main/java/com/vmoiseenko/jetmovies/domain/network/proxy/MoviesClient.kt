@@ -11,7 +11,9 @@ import retrofit2.http.Query
 interface MoviesClient {
 
     @GET("discover/movie")
-    suspend fun getMovies(): Response<Movies>
+    suspend fun getMovies(
+        @Query("page") page: Int
+    ): Response<Movies>
 
     @GET("search/movie")
     suspend fun search(

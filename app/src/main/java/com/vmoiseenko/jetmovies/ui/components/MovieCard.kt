@@ -26,6 +26,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.vmoiseenko.jetmovies.R
 import com.vmoiseenko.jetmovies.ui.theme.BlackTransparent
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
+import com.vmoiseenko.jetmovies.ui.theme.cardShape
 
 @Composable
 fun MovieCard(
@@ -39,7 +40,7 @@ fun MovieCard(
 
     ConstraintLayout(
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(cardShape)
             .fillMaxWidth()
             .height(172.dp)
             .clickable {

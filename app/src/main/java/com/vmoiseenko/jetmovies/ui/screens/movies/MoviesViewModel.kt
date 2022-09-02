@@ -2,46 +2,54 @@ package com.vmoiseenko.jetmovies.ui.screens.movies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.vmoiseenko.jetmovies.domain.network.model.Movie
 import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val repository: MoviesRepository
+    private val repository: MoviesRepository,
+    private val moviesSource: MoviesPagingSource,
 ) : ViewModel() {
 
     private val viewModelState =
-        MutableStateFlow<MoviesContract.UiState>(MoviesContract.UiState.Loading)
+        MutableStateFlow<MoviesContract.UiState>(MoviesContract.UiState.Paging)
+
+    val pagingMoviesFlow: Flow<PagingData<Movie>> = Pager(
+        PagingConfig(pageSize = 1)
+    ) {
+        moviesSource
+    }.flow
+        .cachedIn(viewModelScope)
+
 
     private var job: Job? = null
+    private var page: Int = 1
+    private var searchQuery: String = ""
 
     // UI state exposed to the UI
     val uiState = viewModelState
         .stateIn(
             viewModelScope,
             SharingStarted.Eagerly,
-            MoviesContract.UiState.Loading
+            MoviesContract.UiState.Paging
         )
-
-    init {
-        getMovies()
-    }
 
     private fun getMovies() {
         viewModelScope.launch {
-            val result = repository.getMovies()
+            val result = repository.getMovies(page)
             viewModelState.update {
                 result.fold(
-                    { MoviesContract.UiState.Movies(it) },
+                    { MoviesContract.UiState.Movies(it.results) },
                     { MoviesContract.UiState.Error(it.toString()) }
                 )
             }
@@ -49,30 +57,34 @@ class MoviesViewModel @Inject constructor(
     }
 
     fun search(query: String) {
+        searchQuery = query
         job?.cancel() // cancel prior job on a new change in text
         job = viewModelScope.launch {
             viewModelState.update {
                 MoviesContract.UiState.Loading
             }
             delay(500)
-            println("Do API call with $query")
 
-            val result = if (query.isNotBlank()) {
-                repository.search(query)
+            if (query.isNotBlank()) {
+                println("Do API search call with $query")
+
+                val result = repository.search(query)
+                viewModelState.update {
+                    result.fold(
+                        { MoviesContract.UiState.Movies(it.results) },
+                        { MoviesContract.UiState.Error(it.toString()) }
+                    )
+                }
             } else {
-                repository.getMovies()
-            }
-            viewModelState.update {
-                result.fold(
-                    { MoviesContract.UiState.Movies(it) },
-                    { MoviesContract.UiState.Error(it.toString()) }
-                )
+                viewModelState.update {
+                    MoviesContract.UiState.Paging
+                }
             }
         }
     }
 
     fun retry() {
-        getMovies()
+        search(searchQuery)
     }
 
 //    private val retryTrigger = RetryTrigger()
