@@ -4,7 +4,6 @@ import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
 import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
 import com.vmoiseenko.jetmovies.domain.network.model.Movies
 import com.vmoiseenko.jetmovies.domain.network.proxy.MoviesClient
-import java.io.IOException
 import javax.inject.Inject
 
 interface MoviesRepository {
@@ -19,36 +18,29 @@ class MoviesRepositoryImpl @Inject constructor(
 ) : MoviesRepository {
 
     override suspend fun getMovies(page: Int): Result<Movies> {
-        return try {
-            val response = moviesClient.getMovies(page)
-            if (response.isSuccessful) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Throwable(response.errorBody()?.string()))
-            }
-        } catch (e: IOException) {
-            Result.failure(e)
-        }
+        return moviesClient.getMovies(page)
+
+//        return try {
+//            val response = moviesClient.getMovies(page)
+//            if (response.isSuccessful) {
+//                Result.success(response.body()!!)
+//            } else {
+//                Result.failure(Throwable(response.errorBody()?.string()))
+//            }
+//        } catch (e: IOException) {
+//            Result.failure(e)
+//        }
     }
 
     override suspend fun getDetails(movieId: Int): Result<MovieDetails> {
-        return Result.success(moviesClient.getMovieDetails(movieId).body()!!)
+        return moviesClient.getMovieDetails(movieId)
     }
 
     override suspend fun search(query: String): Result<Movies> {
-        return try {
-            val response = moviesClient.search(query)
-            if (response.isSuccessful) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Throwable(response.errorBody()?.string()))
-            }
-        } catch (e: IOException) {
-            Result.failure(e)
-        }
+        return moviesClient.search(query)
     }
 
     override suspend fun getCredits(movieId: Int): Result<MovieCredits> {
-        return Result.success(moviesClient.getMovieCredits(movieId).body()!!)
+        return moviesClient.getMovieCredits(movieId)
     }
 }

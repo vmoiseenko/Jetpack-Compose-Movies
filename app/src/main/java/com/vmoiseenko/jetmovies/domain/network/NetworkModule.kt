@@ -2,11 +2,15 @@ package com.vmoiseenko.jetmovies.domain.network
 
 import com.vmoiseenko.jetmovies.BuildConfig
 import com.vmoiseenko.jetmovies.domain.network.proxy.MoviesClient
+import com.vmoiseenko.jetmovies.domain.network.proxy.ResultCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.*
+import okhttp3.Dns
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -82,6 +86,7 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addCallAdapterFactory(ResultCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

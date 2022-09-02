@@ -1,6 +1,5 @@
 package com.vmoiseenko.jetmovies.ui.screens.movies
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.vmoiseenko.jetmovies.domain.network.model.Movie
@@ -16,9 +15,7 @@ class MoviesPagingSource @Inject constructor(
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Movie> {
         val nextPage = params.key ?: 1
-        val result = moviesRepository.getMovies(page = nextPage)
-        Log.d("Test", result.toString())
-        return result.fold(
+        return moviesRepository.getMovies(page = nextPage).fold(
             {
                 LoadResult.Page(
                     data = it.results,

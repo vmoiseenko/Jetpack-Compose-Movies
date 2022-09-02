@@ -20,10 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.vmoiseenko.jetmovies.R
 import com.vmoiseenko.jetmovies.domain.network.model.*
-import com.vmoiseenko.jetmovies.ui.components.CastRow
-import com.vmoiseenko.jetmovies.ui.components.CoilImage
-import com.vmoiseenko.jetmovies.ui.components.InfoItem
-import com.vmoiseenko.jetmovies.ui.components.MovieInfo
+import com.vmoiseenko.jetmovies.ui.components.*
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 import com.vmoiseenko.jetmovies.ui.theme.MovieDetailsTransparentBackgroundColor
 import com.vmoiseenko.jetmovies.ui.theme.MoviePrimaryBackgroundColor
@@ -40,6 +37,7 @@ fun MovieDetailsScreen(
     val viewState by viewModel.uiState.collectAsState()
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val coroutineScope = rememberCoroutineScope()
+    var isShowDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     viewModel.getMovies(movieId)
@@ -49,7 +47,20 @@ fun MovieDetailsScreen(
         modifier = modifier
     ) {
         when (viewState) {
-            is MovieDetailsContract.UiState.Error -> TODO()
+            is MovieDetailsContract.UiState.Error -> {
+                isShowDialog = true
+                if (isShowDialog) {
+                    AlertDialogWrapper(
+                        title = "Error",
+                        message = (viewState as MovieDetailsContract.UiState.Error).message,
+                        positiveButton = "Retry" to {
+                            viewModel.getMovies(movieId)
+                        },
+                        negativeButton = "Close" to { },
+                        onDismiss = { isShowDialog = false }
+                    )
+                }
+            }
             MovieDetailsContract.UiState.Loading -> {
                 LoadingState(modifier)
             }
