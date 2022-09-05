@@ -11,7 +11,8 @@ data class MovieCredits(
 data class Cast(
     val name: String,
     @SerializedName(value = "profile_path")
-    val profileImage: String
+    val profileImage: String,
+    val character: String
 ) {
 
     fun imagePath(): String = "http://image.tmdb.org/t/p/w185${profileImage}"
