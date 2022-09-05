@@ -20,6 +20,7 @@ val MovieSecondaryBackgroundColor = Color(0xFF51476d)
 val MovieSecondaryDarkColor = Color(0xFF272042)
 val MovieSecondaryLightColor = Color(0xFF7e729b)
 
+val OnboardingColor = Color(0xFFFDEFFF)
 
 val MovieDetailsTextColor = Color(0xFF774ECB)
 val MovieTransparent = Color(0x33FFFFFF)

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -48,18 +49,23 @@ fun MovieDetailsScreen(
     ) {
         when (viewState) {
             is MovieDetailsContract.UiState.Error -> {
-                isShowDialog = true
-                if (isShowDialog) {
-                    AlertDialogWrapper(
-                        title = "Error",
-                        message = (viewState as MovieDetailsContract.UiState.Error).message,
-                        positiveButton = "Retry" to {
-                            viewModel.getMovies(movieId)
-                        },
-                        negativeButton = "Close" to { },
-                        onDismiss = { isShowDialog = false }
-                    )
-                }
+//                isShowDialog = true
+//                if (isShowDialog) {
+//                    AlertDialogWrapper(
+//                        title = "Error",
+//                        message = (viewState as MovieDetailsContract.UiState.Error).toString(),
+//                        positiveButton = "Retry" to {
+//                            viewModel.getMovies(movieId)
+//                        },
+//                        negativeButton = "Close" to { },
+//                        onDismiss = { isShowDialog = false }
+//                    )
+//                }
+                OfflineState(
+                    buttonAction = "Retry" to {
+                        viewModel.getMovies(movieId)
+                    }
+                )
             }
             MovieDetailsContract.UiState.Loading -> {
                 LoadingState(modifier)
@@ -158,10 +164,9 @@ fun MovieDetailsSuccess(
                 subtitle = "",
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
-            CastRow(
+            CharacterGridRow(
                 data = viewState.credits.cast.take(15),
-                state = rememberLazyListState(),
-                modifier = Modifier.padding(top = 4.dp)
+                state = rememberLazyGridState()
             )
         }
         MovieInfo(
@@ -232,7 +237,7 @@ fun PreviewMovieDetailsScreen() {
                     ),
                     credits = MovieCredits(
                         id = 1,
-                        cast = listOf(Cast("Name Surname", "")),
+                        cast = listOf(Cast("Name Surname", "", "Character")),
                         crew = listOf(Crew("Name Surname", "Director"))
                     ),
                     true

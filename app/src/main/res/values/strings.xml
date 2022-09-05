@@ -4,6 +4,10 @@
     <string name="placeholder_home">Home</string>
     <string name="placeholder_favorites">Favorites</string>
 
+    <string name="movies.onboarding_title">Get Started</string>
+    <string name="movies.onboarding_body">Find a great movie, then relax and enjoy with the Jet Movies App!</string>
+    <string name="movies.onboarding_button">Find movies</string>
+
     <string name="movies.details_storyline">Storyline:</string>
     <string name="movies.details_runtime">"%sh %smin"</string>
     <string name="movies.details_production">Production</string>
@@ -13,4 +17,6 @@
     <string name="movies.details_not_available">N/A</string>
     <string name="movies.details_added_to_fav">Added to favorites</string>
     <string name="movies.details_removed_from_fav">Removed from favorites</string>
+
+    <string name="movies.offline">Your network is unavailable. Check your data or wifi connection.</string>
 </resources>

@@ -52,7 +52,10 @@ class ResultCall<T>(private val delegate: Call<T>) :
                             this@ResultCall,
                             Response.success(
                                 Result.failure(
-                                    HttpException(response)
+                                    ApiError(
+                                        httpCode = response.code(),
+                                        throwable = Throwable("The response wasn't successful: $response")
+                                    )
                                 )
                             )
                         )
@@ -60,14 +63,14 @@ class ResultCall<T>(private val delegate: Call<T>) :
                 }
 
                 override fun onFailure(call: Call<T>, t: Throwable) {
-                    val errorMessage = when (t) {
-                        is IOException -> "No internet connection"
-                        is HttpException -> "Something went wrong! Http error = ${t.code()}"
-                        else -> t.localizedMessage
+                    val apiError = when (t) {
+                        is IOException -> ApiError(isNoInternet = true, throwable = t)
+                        is HttpException -> ApiError(httpCode = t.code(), throwable = t)
+                        else -> ApiError(throwable = t)
                     }
                     callback.onResponse(
                         this@ResultCall,
-                        Response.success(Result.failure(RuntimeException(errorMessage, t)))
+                        Response.success(Result.failure(apiError))
                     )
                 }
             }

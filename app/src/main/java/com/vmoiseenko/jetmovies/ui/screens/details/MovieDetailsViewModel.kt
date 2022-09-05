@@ -3,12 +3,12 @@ package com.vmoiseenko.jetmovies.ui.screens.details
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.vmoiseenko.jetmovies.R
+import com.vmoiseenko.jetmovies.domain.network.proxy.ApiError
 import com.vmoiseenko.jetmovies.domain.repository.FavoriteRepository
 import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
 import com.vmoiseenko.jetmovies.ui.screens.base.BaseViewModel
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsContract.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,7 +45,7 @@ class MovieDetailsViewModel @Inject constructor(
                     try {
                         MovieDetailsContract.UiState.Success(details.getOrThrow(), credits.getOrThrow(), isFavorite)
                     } catch (e: Exception) {
-                        MovieDetailsContract.UiState.Error(e.toString())
+                        MovieDetailsContract.UiState.Error(e as ApiError)
                     }
                 }
             }.collect()
