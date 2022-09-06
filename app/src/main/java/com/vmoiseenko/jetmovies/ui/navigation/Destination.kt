@@ -7,12 +7,22 @@ interface Destination {
     val route: String
 }
 
-object Movies : Destination {
+interface BottomBarDestination : Destination {}
+
+object Movies : BottomBarDestination {
     override val route = "movies"
 }
 
-object Favorites : Destination {
+object TvShows : BottomBarDestination {
+    override val route = "tv_shows"
+}
+
+object Favorites : BottomBarDestination {
     override val route = "favorites"
+}
+
+object Account : BottomBarDestination {
+    override val route = "account"
 }
 
 object MovieDetails : Destination {

@@ -51,7 +51,7 @@ fun FavoritesScreen() {
 
 @Preview
 @Composable
-fun PreviewOnboarding() {
+fun PreviewFavorites() {
     JetMoviesTheme {
         Surface() {
             FavoritesScreen()

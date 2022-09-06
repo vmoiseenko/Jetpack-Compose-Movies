@@ -3,37 +3,29 @@ package com.vmoiseenko.jetmovies.ui.screens
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.vmoiseenko.jetmovies.ui.components.MoviesTabs
 import com.vmoiseenko.jetmovies.ui.components.MyBottomNavigation
-import com.vmoiseenko.jetmovies.ui.navigation.Favorites
-import com.vmoiseenko.jetmovies.ui.navigation.MovieDetails
 import com.vmoiseenko.jetmovies.ui.navigation.Movies
-import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
-import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
-import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
+import com.vmoiseenko.jetmovies.ui.navigation.MoviesNavHost
+import com.vmoiseenko.jetmovies.ui.navigation.currentDestination
+import com.vmoiseenko.jetmovies.ui.navigation.navigateSingleWithRestore
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 
 @Composable
 fun MoviesApp() {
-    JetMoviesTheme() {
+    JetMoviesTheme {
         val navController = rememberNavController()
-
-        val currentBackStack by navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStack?.destination?.route ?: Movies.route
-        val currentScreen = Movies
+        val initialScreen = Movies
+        val currentDestination = navController.currentDestination() ?: initialScreen.route
 
         Scaffold(
             bottomBar = {
-                if (listOf(Movies.route, Favorites.route).contains(currentDestination)) {
+                if (MoviesTabs.hasTab(currentDestination)) {
                     MyBottomNavigation(
-                        { navController.navigateSingleTopTo(Movies.route) },
-                        { navController.navigateSingleTopTo(Favorites.route) }
+                        currentDestination,
+                        { navController.navigateSingleWithRestore(it.route) }
                     )
                 }
             }
@@ -45,43 +37,3 @@ fun MoviesApp() {
         }
     }
 }
-
-@Composable
-fun MoviesNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
-) {
-    NavHost(
-        navController = navController,
-        startDestination = Movies.route,
-        modifier = modifier
-    ) {
-        composable(route = Movies.route) {
-            MoviesScreen(
-                onMovieClick = {
-                    navController.navigateToMovieDetails(it)
-                }
-            )
-        }
-        composable(route = Favorites.route) {
-            FavoritesScreen()
-        }
-        composable(
-            route = MovieDetails.routeWithArgs,
-            arguments = MovieDetails.arguments
-        ) { navBackStackEntry ->
-            val movieId =
-                navBackStackEntry.arguments?.getInt(MovieDetails.movieId) ?: 0
-            MovieDetailsScreen(movieId)
-        }
-    }
-}
-
-fun NavHostController.navigateToMovieDetails(
-    movieId: Int
-) {
-    navigateSingleTopTo("${MovieDetails.route}/$movieId")
-}
-
-fun NavHostController.navigateSingleTopTo(route: String) =
-    this.navigate(route) { launchSingleTop = true }

@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Movies Compose</string>
     <string name="placeholder_search">Search</string>
-    <string name="placeholder_home">Home</string>
+    <string name="placeholder_movies">Movies</string>
+    <string name="placeholder_tv_shows">TV Shows</string>
     <string name="placeholder_favorites">Favorites</string>
+    <string name="placeholder_account">Account</string>
 
     <string name="movies.onboarding_title">Get Started</string>
     <string name="movies.onboarding_body">Find a great movie, then relax and enjoy with the Jet Movies App!</string>
