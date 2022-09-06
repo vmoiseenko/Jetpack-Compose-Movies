@@ -38,12 +38,12 @@ fun CharacterCard(
         CoilImage(
             imageUrl = imageUrl,
             modifier = Modifier
-                .size(72.dp)
-                .padding(top = 4.dp, bottom = 4.dp, end = 4.dp)
+                .size(64.dp)
                 .clip(RoundedCornerShape(6.dp))
         )
         Column(
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.padding(start = 4.dp)
         ) {
             Text(
                 text = title,
