@@ -1,6 +1,7 @@
 package com.vmoiseenko.jetmovies.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ fun CharacterCard(
     imageUrl: String,
     title: String,
     character: String,
+    onClickListener: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -33,6 +35,9 @@ fun CharacterCard(
         modifier = modifier
             .width(172.dp)
             .height(72.dp)
+            .clickable {
+                onClickListener()
+            }
     ) {
 
         CoilImage(
@@ -64,7 +69,12 @@ fun CharacterCard(
 }
 
 @Composable
-fun CharacterGridRow(data: List<Cast>, state: LazyGridState, modifier: Modifier = Modifier) {
+fun CharacterGridRow(
+    data: List<Cast>,
+    state: LazyGridState,
+    onCharacterSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyHorizontalGrid(
         state = state,
         rows = GridCells.Fixed(2),
@@ -77,7 +87,8 @@ fun CharacterGridRow(data: List<Cast>, state: LazyGridState, modifier: Modifier 
             CharacterCard(
                 imageUrl = item.imagePath(),
                 title = item.name,
-                character = item.character
+                character = item.character,
+                onClickListener = { onCharacterSelected(item.id) }
             )
         }
     }
@@ -91,6 +102,7 @@ fun PreviewCharacterCard() {
         Surface() {
             CharacterCard(
                 "", "Tom Cruise", "Capt. Pete 'Maverick' Mitchell",
+                {},
                 Modifier.background(MoviePrimaryBackgroundColor)
             )
         }
@@ -104,16 +116,17 @@ fun PreviewCharacterCards() {
         Surface() {
             CharacterGridRow(
                 listOf(
-                    Cast("Name Surname", "Tom Cruise", "Capt. Pete 'Maverick' Mitchell"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast("Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Name Surname", "Tom Cruise", "Capt. Pete 'Maverick' Mitchell"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
+                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
                 ),
                 rememberLazyGridState(),
+                {},
                 Modifier.background(MoviePrimaryBackgroundColor)
             )
         }

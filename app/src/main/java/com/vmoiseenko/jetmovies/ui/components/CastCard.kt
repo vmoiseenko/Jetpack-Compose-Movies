@@ -81,8 +81,8 @@ fun PreviewCastCards() {
         Surface {
             CastRow(
                 listOf(
-                    Cast("Name Surname", "", "Character"),
-                    Cast("Title Surname", "", "Character")
+                    Cast(1, "Name Surname", "", "Character"),
+                    Cast(1, "Title Surname", "", "Character")
                 ),
                 rememberLazyListState()
             )

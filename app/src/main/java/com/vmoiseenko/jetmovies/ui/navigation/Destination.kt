@@ -33,3 +33,12 @@ object MovieDetails : Destination {
         navArgument(movieId) { type = NavType.IntType }
     )
 }
+
+object ArtistDetails : Destination {
+    override val route = "artistDetails"
+    const val artistId = "artist_id"
+    val routeWithArgs = "${route}/{${artistId}}"
+    val arguments = listOf(
+        navArgument(artistId) { type = NavType.IntType }
+    )
+}

@@ -9,6 +9,7 @@ data class MovieCredits(
 )
 
 data class Cast(
+    val id: Int,
     val name: String,
     @SerializedName(value = "profile_path")
     val profileImage: String,

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.vmoiseenko.jetmovies.ui.screens.artist.ArtistScreen
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
 import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
 import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
@@ -43,7 +44,17 @@ fun MoviesNavHost(
         ) { navBackStackEntry ->
             val movieId =
                 navBackStackEntry.arguments?.getInt(MovieDetails.movieId) ?: 0
-            MovieDetailsScreen(movieId)
+            MovieDetailsScreen(movieId, {
+                navController.navigateToArtist(it)
+            })
+        }
+        composable(
+            route = ArtistDetails.routeWithArgs,
+            arguments = ArtistDetails.arguments
+        ) { navBackStackEntry ->
+            val artistId =
+                navBackStackEntry.arguments?.getInt(ArtistDetails.artistId) ?: 0
+            ArtistScreen(artistId)
         }
     }
 }

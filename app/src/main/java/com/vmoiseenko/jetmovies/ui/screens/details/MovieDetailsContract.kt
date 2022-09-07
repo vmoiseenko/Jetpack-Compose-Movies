@@ -8,7 +8,7 @@ import com.vmoiseenko.jetmovies.ui.screens.base.UIStateBase
 
 interface MovieDetailsContract {
 
-    sealed class UiState: UIStateBase {
+    sealed class UiState : UIStateBase {
         object Loading : UiState()
         data class Success(
             val details: MovieDetails,
@@ -17,6 +17,11 @@ interface MovieDetailsContract {
         ) : UiState()
 
         data class Error(val apiError: ApiError) : UiState()
+    }
+
+    sealed class UiClickEvent {
+        data class Favorite(val movieId: Int, val isFavorite: Boolean) : UiClickEvent()
+        data class Artist(val artistId: Int) : UiClickEvent()
     }
 
     sealed class UiEvent {

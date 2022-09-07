@@ -22,6 +22,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.vmoiseenko.jetmovies.R
 import com.vmoiseenko.jetmovies.domain.network.model.*
 import com.vmoiseenko.jetmovies.ui.components.*
+import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsContract.UiClickEvent.Artist
+import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsContract.UiClickEvent.Favorite
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 import com.vmoiseenko.jetmovies.ui.theme.MovieDetailsTransparentBackgroundColor
 import com.vmoiseenko.jetmovies.ui.theme.MoviePrimaryBackgroundColor
@@ -32,6 +34,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun MovieDetailsScreen(
     movieId: Int,
+    onCharacterClick: (Int) -> Unit,
     viewModel: MovieDetailsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -73,7 +76,19 @@ fun MovieDetailsScreen(
             is MovieDetailsContract.UiState.Success -> {
                 MovieDetailsSuccess(
                     viewState as MovieDetailsContract.UiState.Success,
-                    viewModel::favoriteButtonClicked,
+                    { uiClickEvent ->
+                        when (uiClickEvent) {
+                            is Favorite -> {
+                                viewModel.favoriteButtonClicked(
+                                    uiClickEvent.movieId,
+                                    uiClickEvent.isFavorite
+                                )
+                            }
+                            is Artist -> {
+                                onCharacterClick(uiClickEvent.artistId)
+                            }
+                        }
+                    },
                     modifier
                 )
             }
@@ -99,7 +114,7 @@ fun MovieDetailsScreen(
 @Composable
 fun MovieDetailsSuccess(
     viewState: MovieDetailsContract.UiState.Success,
-    onFavoriteClick: (Int, Boolean) -> Unit,
+    onUiClickEvent: (MovieDetailsContract.UiClickEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -135,6 +150,22 @@ fun MovieDetailsSuccess(
                             )
                         )
                 )
+
+                MovieInfo(
+                    title = viewState.details.title,
+                    genres = viewState.details.genres.map { it.name },
+                    runtime = viewState.details.runtime.minutes.toComponents { hours, minutes, _, _ ->
+                        stringResource(R.string.movies_details_runtime, hours, minutes)
+                    },
+                    rating = viewState.details.vote,
+                    isFavorite = viewState.isFavorite,
+                    onFavoriteClick = {
+                        onUiClickEvent(Favorite(viewState.details.id, it))
+                    },
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(start = 16.dp, end = 16.dp)
+                )
             }
 
             InfoItem(
@@ -166,22 +197,10 @@ fun MovieDetailsSuccess(
             )
             CharacterGridRow(
                 data = viewState.credits.cast.take(15),
-                state = rememberLazyGridState()
+                state = rememberLazyGridState(),
+                onCharacterSelected = { onUiClickEvent(Artist(it)) }
             )
         }
-        MovieInfo(
-            title = viewState.details.title,
-            genres = viewState.details.genres.map { it.name },
-            runtime = viewState.details.runtime.minutes.toComponents { hours, minutes, _, _ ->
-                stringResource(R.string.movies_details_runtime, hours, minutes)
-            },
-            rating = viewState.details.vote,
-            isFavorite = viewState.isFavorite,
-            onFavoriteClick = {
-                onFavoriteClick(viewState.details.id, it)
-            },
-            modifier.padding(start = 16.dp, end = 16.dp, top = 202.dp)
-        )
     }
 }
 
@@ -237,12 +256,12 @@ fun PreviewMovieDetailsScreen() {
                     ),
                     credits = MovieCredits(
                         id = 1,
-                        cast = listOf(Cast("Name Surname", "", "Character")),
+                        cast = listOf(Cast(1, "Name Surname", "", "Character")),
                         crew = listOf(Crew("Name Surname", "Director"))
                     ),
                     true
                 ),
-                onFavoriteClick = { _, _ -> }
+                onUiClickEvent = {}
             )
         }
     }
