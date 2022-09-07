@@ -42,8 +42,8 @@ fun NavHostController.navigateToMovieDetails(
     navigateSingleTopTo("${MovieDetails.route}/$movieId")
 }
 
-fun NavHostController.navigateToArtist(
-    artistId: Int
+fun NavHostController.navigateToActorScreen(
+    actorId: Int
 ) {
-    navigateSingleTopTo("${ArtistDetails.route}/$artistId")
+    navigateSingleTopTo("${ActorScreen.route}/$actorId")
 }

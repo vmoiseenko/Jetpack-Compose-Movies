@@ -3,6 +3,7 @@ package com.vmoiseenko.jetmovies.domain.network.proxy
 import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
 import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
 import com.vmoiseenko.jetmovies.domain.network.model.Movies
+import com.vmoiseenko.jetmovies.domain.network.model.Person
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -28,4 +29,9 @@ interface MoviesClient {
     suspend fun getMovieCredits(
         @Path("movieId") movieId: Int
     ): Result<MovieCredits>
+
+    @GET("person/{personId}")
+    suspend fun getPerson(
+        @Path("personId") personId: Int
+    ): Result<Person>
 }

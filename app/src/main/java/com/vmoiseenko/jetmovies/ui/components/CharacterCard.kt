@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -91,6 +92,14 @@ fun CharacterGridRow(
                 onClickListener = { onCharacterSelected(item.id) }
             )
         }
+        item {
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "See all")
+            }
+        }
     }
 }
 
@@ -117,11 +126,6 @@ fun PreviewCharacterCards() {
             CharacterGridRow(
                 listOf(
                     Cast(1, "Name Surname", "Tom Cruise", "Capt. Pete 'Maverick' Mitchell"),
-                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
-                    Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
                     Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
                     Cast(1, "Title Surname", "Jennifer Connelly", "Penny Benjamin"),
                 ),

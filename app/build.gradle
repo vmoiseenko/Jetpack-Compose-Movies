@@ -33,6 +33,8 @@ android {
 
         defaultConfig {
             it.buildConfigField 'String', "TheMovieDbAPIKey", properties.getProperty("TheMovieDbAPIKey", "")
+            it.buildConfigField 'String', "ApiBaseUrl", "\"http://api.themoviedb.org/3/\""
+            it.buildConfigField 'String', "ImagesBaseUrl", "\"http://image.tmdb.org/t/p/\""
         }
     }
 

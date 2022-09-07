@@ -1,6 +1,7 @@
 package com.vmoiseenko.jetmovies.domain.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.vmoiseenko.jetmovies.domain.network.model.Image.Companion.imagePath
 
 data class Movie(
     var id: Int,
@@ -14,7 +15,7 @@ data class Movie(
     var vote: Float,
 
 ) {
-    fun imagePath(): String = "http://image.tmdb.org/t/p/w300${posterPath}"
+    fun imagePath(): String = Poster.W342.imagePath(posterPath)
 }
 
 

@@ -3,6 +3,7 @@ package com.vmoiseenko.jetmovies.domain.repository
 import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
 import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
 import com.vmoiseenko.jetmovies.domain.network.model.Movies
+import com.vmoiseenko.jetmovies.domain.network.model.Person
 import com.vmoiseenko.jetmovies.domain.network.proxy.MoviesClient
 import javax.inject.Inject
 
@@ -11,6 +12,7 @@ interface MoviesRepository {
     suspend fun getMovies(page: Int): Result<Movies>
     suspend fun getDetails(movieId: Int): Result<MovieDetails>
     suspend fun getCredits(movieId: Int): Result<MovieCredits>
+    suspend fun getPerson(id: Int): Result<Person>
 }
 
 class MoviesRepositoryImpl @Inject constructor(
@@ -42,5 +44,9 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getCredits(movieId: Int): Result<MovieCredits> {
         return moviesClient.getMovieCredits(movieId)
+    }
+
+    override suspend fun getPerson(id: Int): Result<Person> {
+        return moviesClient.getPerson(id)
     }
 }
