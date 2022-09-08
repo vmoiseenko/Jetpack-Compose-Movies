@@ -20,5 +20,9 @@
     <string name="movies.details_added_to_fav">Added to favorites</string>
     <string name="movies.details_removed_from_fav">Removed from favorites</string>
 
+    <string name="actor.born">Born</string>
+    <string name="actor.show_more">Show more</string>
+    <string name="actor.show_less">Show less</string>
+
     <string name="movies.offline">Your network is unavailable. Check your data or wifi connection.</string>
 </resources>

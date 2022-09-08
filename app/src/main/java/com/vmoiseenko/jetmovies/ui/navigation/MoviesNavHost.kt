@@ -54,7 +54,7 @@ fun MoviesNavHost(
         ) { navBackStackEntry ->
             val artistId =
                 navBackStackEntry.arguments?.getInt(ActorScreen.actorId) ?: 0
-            ActorScreen(artistId)
+            ActorScreen(artistId, navController::navigateBack)
         }
     }
 }

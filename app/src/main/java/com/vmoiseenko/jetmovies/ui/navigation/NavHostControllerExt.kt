@@ -47,3 +47,8 @@ fun NavHostController.navigateToActorScreen(
 ) {
     navigateSingleTopTo("${ActorScreen.route}/$actorId")
 }
+
+fun NavHostController.navigateBack(
+) {
+    this.navigateUp()
+}
