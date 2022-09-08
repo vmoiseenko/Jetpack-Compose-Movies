@@ -1,14 +1,29 @@
 package com.vmoiseenko.jetmovies.domain.network.proxy
 
-import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
-import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
-import com.vmoiseenko.jetmovies.domain.network.model.Movies
-import com.vmoiseenko.jetmovies.domain.network.model.Person
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import com.vmoiseenko.jetmovies.domain.network.model.*
+import retrofit2.http.*
 
 interface MoviesClient {
+
+    @GET("authentication/token/new")
+    suspend fun getRequestToken(): Result<RequestToken>
+
+    @POST("authentication/token/validate_with_login")
+    suspend fun validateToken(@Body sessionRequestBody: CredentialsRequestBody): Result<RequestToken>
+
+    @POST("authentication/session/new")
+    suspend fun createSession(@Body requestTokenRequestBody: RequestTokenRequestBody): Result<Session>
+
+    @GET("account")
+    suspend fun getAccount(
+        @Query("session_id") sessionId: String
+    ): Result<Account>
+
+    @GET("account/{accountId}/favorite/movies")
+    suspend fun getFavoriteMovies(
+        @Path("accountId") accountId: Int,
+        @Query("session_id") sessionId: String
+    ): Result<Movies>
 
     @GET("discover/movie")
     suspend fun getMovies(

@@ -5,11 +5,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.vmoiseenko.jetmovies.ui.screens.account.AccountScreen
 import com.vmoiseenko.jetmovies.ui.screens.artist.ActorScreen
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
 import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
 import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
-import com.vmoiseenko.jetmovies.ui.screens.tv.AccountScreen
 import com.vmoiseenko.jetmovies.ui.screens.tv.TvShowsScreen
 
 @Composable
