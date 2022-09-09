@@ -1,10 +1,13 @@
 package com.vmoiseenko.jetmovies.ui.screens.account
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.*
@@ -12,6 +15,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -31,11 +36,18 @@ fun AccountScreen(
 
     val viewState by viewModel.uiState.collectAsState()
 
-    AccountScreenView(
-        onLogin = viewModel::login,
-        modifier = modifier,
-        viewState = viewState
-    )
+    if (viewState !is UiState.SignedIn) {
+        AccountScreenView(
+            onLogin = viewModel::login,
+            modifier = modifier,
+            viewState = viewState
+        )
+    } else {
+        Text(
+            text = "Hello ${(viewState as UiState.SignedIn).account.name}",
+            style = MaterialTheme.typography.h4,
+        )
+    }
 }
 
 @Composable
@@ -46,7 +58,6 @@ fun AccountScreenView(
 ) {
     var username by remember { mutableStateOf(TextFieldValue()) }
     var password by remember { mutableStateOf(TextFieldValue()) }
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -64,73 +75,111 @@ fun AccountScreenView(
             style = MaterialTheme.typography.caption,
             modifier = Modifier.padding(bottom = 16.dp)
         )
-        TextField(
-            label = { Text(text = stringResource(id = R.string.account_username)) },
+        TextFieldWrapper(
+            title = R.string.account_username,
+            leadingIcon = Icons.Filled.VerifiedUser,
             value = username,
-            onValueChange = { username = it },
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .fillMaxWidth()
-
+            onValueChange = { username = it }
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-        TextField(
-            label = { Text(text = stringResource(id = R.string.account_password)) },
+        TextFieldWrapper(
+            title = R.string.account_password,
+            leadingIcon = Icons.Filled.Lock,
             value = password,
-            visualTransformation = if (passwordVisible)
-                VisualTransformation.None
-            else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
             onValueChange = { password = it },
-            trailingIcon = {
-                val image = if (passwordVisible) Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(imageVector = image, null)
-                }
-            },
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .fillMaxWidth()
+            isPassword = true
         )
         Box(modifier = Modifier.padding(16.dp)) {
             Button(
                 onClick = { onLogin(username.text, password.text) },
                 enabled = username.text.isNotBlank() && password.text.isNotBlank(),
-                shape = RoundedCornerShape(50.dp),
+                shape = RoundedCornerShape(24.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+                    .height(56.dp)
             ) {
-                if (viewState is UiState.Loading) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colors.onSurface,
-                        modifier = Modifier
-                            .align(CenterVertically)
-                    )
-                } else {
-                    Text(text = stringResource(id = R.string.account_sign_in))
+                when (viewState) {
+                    is UiState.Loading -> {
+                        CircularProgressIndicator(
+                            color = Color.White,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .align(CenterVertically)
+                        )
+                    }
+                    else -> {
+                        Text(text = stringResource(id = R.string.account_sign_in))
+                    }
                 }
             }
         }
 
-        when (viewState) {
-            is UiState.Error -> {
-                Text(
-                    text = "Login failed\n${(viewState as UiState.Error).message}"
-                )
-            }
-            is UiState.Movies -> {
-                Text(
-                    text = "Login successful, there are yours favorite movies\n${(viewState as UiState.Movies).movies}"
-                )
-            }
-            else -> {}
+        if (viewState is UiState.Error) {
+            Text(
+                text = "Login failed\n${viewState.message}"
+            )
         }
     }
+}
+
+@Composable
+fun TextFieldWrapper(
+    @StringRes title: Int,
+    leadingIcon: ImageVector,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
+    isPassword: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+
+    var isPasswordVisible by rememberSaveable { mutableStateOf(false) }
+
+    TextField(
+        label = {
+            Text(text = stringResource(id = title))
+        },
+        value = value,
+        leadingIcon = {
+            Icon(imageVector = leadingIcon, null)
+        },
+        trailingIcon = {
+            if (isPassword) {
+                val image = when {
+                    isPasswordVisible -> Icons.Filled.Visibility
+                    else -> Icons.Filled.VisibilityOff
+                }
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(imageVector = image, null)
+                }
+            }
+        },
+        visualTransformation = when {
+            isPassword && isPasswordVisible -> VisualTransformation.None
+            isPassword -> PasswordVisualTransformation()
+            else -> VisualTransformation.None
+        },
+        keyboardOptions = when {
+            isPassword -> {
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Password
+                )
+            }
+            else -> {
+                KeyboardOptions.Default
+            }
+        },
+        onValueChange = { onValueChange(it) },
+        shape = RoundedCornerShape(24.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            disabledTextColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent
+        ),
+        modifier = modifier
+            .padding(start = 16.dp, end = 16.dp)
+            .fillMaxWidth()
+    )
 }
 
 @Preview

@@ -1,8 +1,8 @@
 package com.vmoiseenko.jetmovies.ui.screens.account
 
 import androidx.lifecycle.viewModelScope
+import com.vmoiseenko.jetmovies.domain.network.model.Account
 import com.vmoiseenko.jetmovies.domain.network.model.CredentialsRequestBody
-import com.vmoiseenko.jetmovies.domain.network.model.Movie
 import com.vmoiseenko.jetmovies.domain.network.model.RequestTokenRequestBody
 import com.vmoiseenko.jetmovies.domain.network.proxy.MoviesClient
 import com.vmoiseenko.jetmovies.ui.screens.base.BaseViewModel
@@ -43,10 +43,10 @@ class AccountViewModel @Inject constructor(
                         validateToken
                     )
                 ).getOrThrow().sessionId
-                val accountId = moviesClient.getAccount(sessionId).getOrThrow().id
-                val favorites = moviesClient.getFavoriteMovies(accountId, sessionId).getOrThrow()
+                val accountId = moviesClient.getAccount(sessionId).getOrThrow()
+//                val favorites = moviesClient.getFavoriteMovies(accountId, sessionId).getOrThrow()
                 viewModelState.update {
-                    UiState.Movies(favorites.results)
+                    UiState.SignedIn(accountId)
                 }
             } catch (e: Exception) {
                 viewModelState.update {
@@ -60,6 +60,6 @@ class AccountViewModel @Inject constructor(
 sealed class UiState : UIStateBase {
     object Initial : UiState()
     object Loading : UiState()
-    data class Movies(val movies: List<Movie>) : UiState()
+    data class SignedIn(val account: Account) : UiState()
     data class Error(val message: String) : UiState()
 }
