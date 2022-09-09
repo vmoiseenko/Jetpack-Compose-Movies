@@ -14,6 +14,9 @@ interface MoviesClient {
     @POST("authentication/session/new")
     suspend fun createSession(@Body requestTokenRequestBody: RequestTokenRequestBody): Result<Session>
 
+    @HTTP(method = "DELETE", path = "authentication/session", hasBody = true)
+    suspend fun deleteSession(@Body session: Session): Result<Session>
+
     @GET("account")
     suspend fun getAccount(
         @Query("session_id") sessionId: String

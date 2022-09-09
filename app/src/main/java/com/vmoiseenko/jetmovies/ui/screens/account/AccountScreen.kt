@@ -37,21 +37,21 @@ fun AccountScreen(
     val viewState by viewModel.uiState.collectAsState()
 
     if (viewState !is UiState.SignedIn) {
-        AccountScreenView(
+        SignInScreen(
             onLogin = viewModel::login,
             modifier = modifier,
             viewState = viewState
         )
     } else {
-        Text(
-            text = "Hello ${(viewState as UiState.SignedIn).account.name}",
-            style = MaterialTheme.typography.h4,
+        UserScreen(
+            userName = (viewState as UiState.SignedIn).account.name,
+            onSignOut = viewModel::logout
         )
     }
 }
 
 @Composable
-fun AccountScreenView(
+fun SignInScreen(
     onLogin: (String, String) -> Unit,
     viewState: UiState = UiState.Initial,
     modifier: Modifier = Modifier,
@@ -123,6 +123,37 @@ fun AccountScreenView(
 }
 
 @Composable
+fun UserScreen(
+    userName: String,
+    onSignOut: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Text(
+            text = stringResource(id = R.string.account_welcome, userName),
+            style = MaterialTheme.typography.h4,
+
+            )
+        Spacer(modifier = Modifier.size(16.dp))
+        Button(
+            onClick = { onSignOut() },
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .padding(start = 16.dp, end = 16.dp)
+        ) {
+            Text(text = stringResource(id = R.string.account_sign_out))
+        }
+    }
+}
+
+@Composable
 fun TextFieldWrapper(
     @StringRes title: Int,
     leadingIcon: ImageVector,
@@ -184,10 +215,20 @@ fun TextFieldWrapper(
 
 @Preview
 @Composable
-fun PreviewAccountScreen() {
+fun PreviewSignInScreen() {
     JetMoviesTheme {
         Surface {
-            AccountScreenView({ _: String, _: String -> })
+            SignInScreen({ _: String, _: String -> })
+        }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewUserScreen() {
+    JetMoviesTheme {
+        Surface {
+            UserScreen("Android", {})
         }
     }
 }

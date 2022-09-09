@@ -1,9 +1,6 @@
 package com.vmoiseenko.jetmovies.di
 
-import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
-import com.vmoiseenko.jetmovies.domain.repository.MoviesRepositoryImpl
-import com.vmoiseenko.jetmovies.domain.repository.FavoriteRepository
-import com.vmoiseenko.jetmovies.domain.repository.FavoriteRepositoryImpl
+import com.vmoiseenko.jetmovies.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,4 +15,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindFavoriteRepository(impl: FavoriteRepositoryImpl): FavoriteRepository
+
+    @Binds
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 }

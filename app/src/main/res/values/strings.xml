@@ -26,9 +26,11 @@
 
     <string name="movies.offline">Your network is unavailable. Check your data or wifi connection.</string>
 
+    <string name="account.welcome">Welcome %s</string>
     <string name="account.login_now">Login Now</string>
     <string name="account.username">Username</string>
     <string name="account.password">Password</string>
     <string name="account.sign_in">Sign In</string>
+    <string name="account.sign_out">Sign Out</string>
     <string name="account.description">Please enter the details below to continue</string>
 </resources>
