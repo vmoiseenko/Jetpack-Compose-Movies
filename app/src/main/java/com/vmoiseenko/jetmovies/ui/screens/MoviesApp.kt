@@ -1,5 +1,6 @@
 package com.vmoiseenko.jetmovies.ui.screens
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -32,7 +33,9 @@ fun MoviesApp() {
         ) { innerPadding ->
             MoviesNavHost(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
             )
         }
     }

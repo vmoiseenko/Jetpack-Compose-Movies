@@ -1,5 +1,7 @@
 package com.vmoiseenko.jetmovies.domain.repository
 
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
+import com.vmoiseenko.jetmovies.domain.dto.mapToItem
 import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
 import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
 import com.vmoiseenko.jetmovies.domain.network.model.Movies
@@ -9,7 +11,7 @@ import javax.inject.Inject
 
 interface MoviesRepository {
     suspend fun search(query: String): Result<Movies>
-    suspend fun getMovies(page: Int): Result<Movies>
+    suspend fun getMovies(page: Int): Result<Pair<Int, List<MovieItem>>>
     suspend fun getDetails(movieId: Int): Result<MovieDetails>
     suspend fun getCredits(movieId: Int): Result<MovieCredits>
     suspend fun getPerson(id: Int): Result<Person>
@@ -19,19 +21,12 @@ class MoviesRepositoryImpl @Inject constructor(
     private val moviesClient: MoviesClient
 ) : MoviesRepository {
 
-    override suspend fun getMovies(page: Int): Result<Movies> {
-        return moviesClient.getMovies(page)
-
-//        return try {
-//            val response = moviesClient.getMovies(page)
-//            if (response.isSuccessful) {
-//                Result.success(response.body()!!)
-//            } else {
-//                Result.failure(Throwable(response.errorBody()?.string()))
-//            }
-//        } catch (e: IOException) {
-//            Result.failure(e)
-//        }
+    override suspend fun getMovies(page: Int): Result<Pair<Int, List<MovieItem>>> {
+        return moviesClient.getMovies(page).map { movies ->
+            movies.page to movies.results.map {
+                it.mapToItem()
+            }
+        }
     }
 
     override suspend fun getDetails(movieId: Int): Result<MovieDetails> {

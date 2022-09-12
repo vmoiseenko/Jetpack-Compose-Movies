@@ -9,8 +9,8 @@ import com.vmoiseenko.jetmovies.ui.screens.account.AccountScreen
 import com.vmoiseenko.jetmovies.ui.screens.artist.ActorScreen
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
 import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
+import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesContract
 import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
-import com.vmoiseenko.jetmovies.ui.screens.tv.TvShowsScreen
 
 @Composable
 fun MoviesNavHost(
@@ -29,8 +29,21 @@ fun MoviesNavHost(
                 }
             )
         }
+        composable(
+            route = Movies.routeWithArgs,
+            arguments = Movies.arguments
+        ) {
+            MoviesScreen(
+                onMovieClick = {
+                    navController.navigateToMovieDetails(it)
+                }
+            )
+        }
         composable(route = TvShows.route) {
-            TvShowsScreen()
+            navController.navigateToMovies(
+                MoviesContract.SourceType.TV_SHOW
+            )
+//            TvShowsScreen()
         }
         composable(route = Favorites.route) {
             FavoritesScreen()

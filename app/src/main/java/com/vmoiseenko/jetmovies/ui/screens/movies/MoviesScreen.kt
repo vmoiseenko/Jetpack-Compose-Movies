@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.vmoiseenko.jetmovies.domain.network.model.Movie
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.ui.components.ErrorItem
 import com.vmoiseenko.jetmovies.ui.components.MoviesGridList
 import com.vmoiseenko.jetmovies.ui.components.MoviesGridPaging
@@ -37,11 +37,10 @@ fun MoviesScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MoviePrimaryBackgroundColor)
-
     ) {
 
         val viewState by viewModel.uiState.collectAsState()
-        val pagingItems: LazyPagingItems<Movie> =
+        val pagingItems: LazyPagingItems<MovieItem> =
             viewModel.pagingMoviesFlow.collectAsLazyPagingItems()
 
         SearchBar(onValueChange = {
@@ -84,7 +83,7 @@ fun MoviesScreen(
 @Preview
 @Composable
 fun PreviewWellnessScreen() {
-    JetMoviesTheme() {
+    JetMoviesTheme {
         Surface {
 //            MoviesScreen()
         }

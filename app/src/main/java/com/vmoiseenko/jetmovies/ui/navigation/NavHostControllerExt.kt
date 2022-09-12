@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesContract
 
 @Composable
 fun NavHostController.currentDestination(): String? {
@@ -35,6 +36,12 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         launchSingleTop = true
         restoreState = true
     }
+
+fun NavHostController.navigateToMovies(
+    sourceType: MoviesContract.SourceType
+) {
+    navigateSingleTopTo("${Movies.route}/${sourceType.type}")
+}
 
 fun NavHostController.navigateToMovieDetails(
     movieId: Int

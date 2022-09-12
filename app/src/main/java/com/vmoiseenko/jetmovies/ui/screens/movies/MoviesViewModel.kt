@@ -1,13 +1,16 @@
 package com.vmoiseenko.jetmovies.ui.screens.movies
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.vmoiseenko.jetmovies.domain.network.model.Movie
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
+import com.vmoiseenko.jetmovies.domain.dto.mapToItem
 import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
+import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,14 +20,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val repository: MoviesRepository,
     private val moviesSource: MoviesPagingSource,
 ) : ViewModel() {
 
+    init {
+        val argument = savedStateHandle.get<String>(Movies.sourceType).orEmpty()
+        println("TEST $argument")
+    }
+
     private val viewModelState =
         MutableStateFlow<MoviesContract.UiState>(MoviesContract.UiState.Paging)
 
-    val pagingMoviesFlow: Flow<PagingData<Movie>> = Pager(
+    val pagingMoviesFlow: Flow<PagingData<MovieItem>> = Pager(
         PagingConfig(pageSize = 1)
     ) {
         moviesSource
@@ -49,7 +58,7 @@ class MoviesViewModel @Inject constructor(
             val result = repository.getMovies(page)
             viewModelState.update {
                 result.fold(
-                    { MoviesContract.UiState.Movies(it.results) },
+                    { MoviesContract.UiState.Movies(it.second) },
                     { MoviesContract.UiState.Error(it.toString()) }
                 )
             }
@@ -71,7 +80,7 @@ class MoviesViewModel @Inject constructor(
                 val result = repository.search(query)
                 viewModelState.update {
                     result.fold(
-                        { MoviesContract.UiState.Movies(it.results) },
+                        { MoviesContract.UiState.Movies(it.results.map { it.mapToItem() }) },
                         { MoviesContract.UiState.Error(it.toString()) }
                     )
                 }

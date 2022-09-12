@@ -3,11 +3,12 @@ package com.vmoiseenko.jetmovies.domain.network.model
 import com.google.gson.annotations.SerializedName
 import com.vmoiseenko.jetmovies.domain.network.model.Image.Companion.imagePath
 
-data class Movie(
+data class TVShow(
     var id: Int,
+    @SerializedName(value = "name")
     var title: String,
     var overview: String,
-    @SerializedName(value = "release_date")
+    @SerializedName(value = "first_air_date")
     var releaseDate: String,
     @SerializedName(value = "poster_path")
     var posterPath: String,

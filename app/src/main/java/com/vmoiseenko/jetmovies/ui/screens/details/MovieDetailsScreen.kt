@@ -239,7 +239,7 @@ private fun List<Crew>.mapCrew(vararg job: String) =
 @Preview
 @Composable
 fun PreviewMovieDetailsScreen() {
-    JetMoviesTheme() {
+    JetMoviesTheme {
         Surface {
             MovieDetailsSuccess(
                 MovieDetailsContract.UiState.Success(
@@ -252,6 +252,7 @@ fun PreviewMovieDetailsScreen() {
                         runtime = 126,
                         releaseDate = "2022-07-06",
                         backdropPath = "",
+                        posterPath = "",
                         vote = 6.769f
                     ),
                     credits = MovieCredits(

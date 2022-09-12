@@ -7,10 +7,15 @@ interface Destination {
     val route: String
 }
 
-interface BottomBarDestination : Destination {}
+interface BottomBarDestination : Destination
 
 object Movies : BottomBarDestination {
     override val route = "movies"
+    val sourceType = "sourceType"
+    val routeWithArgs = "${MovieDetails.route}/{${sourceType}}"
+    val arguments = listOf(
+        navArgument(sourceType) { type = NavType.StringType }
+    )
 }
 
 object TvShows : BottomBarDestination {

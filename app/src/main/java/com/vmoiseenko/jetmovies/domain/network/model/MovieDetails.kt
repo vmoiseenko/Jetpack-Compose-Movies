@@ -14,12 +14,16 @@ data class MovieDetails(
     @SerializedName(value = "release_date")
     var releaseDate: String,
     @SerializedName(value = "backdrop_path")
-    var backdropPath: String,
+    var backdropPath: String?,
+    @SerializedName(value = "poster_path")
+    var posterPath: String,
     @SerializedName(value = "vote_average")
-    var vote: Float,
+    var vote: Float
+) {
 
-    ) {
-    fun imagePath(): String = Backdrop.W780.imagePath(backdropPath)
+    fun imagePath() = backdropPath?.let {
+        Backdrop.W780.imagePath(it)
+    } ?: Poster.W780.imagePath(posterPath)
 }
 
 data class Info(

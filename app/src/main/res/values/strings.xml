@@ -26,6 +26,8 @@
 
     <string name="movies.offline">Your network is unavailable. Check your data or wifi connection.</string>
 
+    <string name="favorite.empty">You have no favorite movies. Once you add it, you will see it here!</string>
+
     <string name="account.welcome">Welcome %s</string>
     <string name="account.login_now">Login Now</string>
     <string name="account.username">Username</string>

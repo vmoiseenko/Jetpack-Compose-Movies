@@ -11,23 +11,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.shimmer
-import com.vmoiseenko.jetmovies.R
-import com.vmoiseenko.jetmovies.domain.network.model.Movie
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.ui.theme.GrayLight
 import com.vmoiseenko.jetmovies.ui.theme.MovieDetailsTransparentBackgroundColor
 import com.vmoiseenko.jetmovies.ui.theme.cardShape
-import java.time.LocalDate
 
 @Composable
 fun MoviesGridPaging(
-    items: LazyPagingItems<Movie>,
+    items: LazyPagingItems<MovieItem>,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,15 +44,8 @@ fun MoviesGridPaging(
         ) { index ->
             items[index]?.let { movie ->
                 MovieCard(
-                    title = movie.title,
-                    year = movie.releaseDate.takeIf { it.isNotBlank() }
-                        ?.let { LocalDate.parse(it).year.toString() }
-                        ?: stringResource(id = R.string.movies_details_not_available),
-                    rating = movie.vote,
-                    imageUrl = movie.imagePath(),
-                    onClickListener = {
-                        onMovieClick(movie.id)
-                    }
+                    movie = movie,
+                    onClickListener = { onMovieClick(movie.id) }
                 )
             }
         }
