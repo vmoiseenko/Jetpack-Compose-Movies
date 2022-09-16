@@ -4,12 +4,11 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.domain.repository.MoviesProviderRepository
-import javax.inject.Inject
-import javax.inject.Named
 
-class MoviesPagingSource @Inject constructor(
-    @Named("TvShowsProvider") private val moviesRepository: MoviesProviderRepository
+class MoviesPagingSource constructor(
+    private val moviesRepository: MoviesProviderRepository
 ) : PagingSource<Int, MovieItem>() {
+
     override fun getRefreshKey(state: PagingState<Int, MovieItem>): Int? {
         return state.anchorPosition
     }

@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.domain.dto.mapToItem
+import com.vmoiseenko.jetmovies.domain.repository.MoviesProviderRepositoryBase
 import com.vmoiseenko.jetmovies.domain.repository.MoviesRepository
 import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,14 +21,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val repository: MoviesRepository,
-    private val moviesSource: MoviesPagingSource,
+    savedStateHandle: SavedStateHandle,
+    moviesProviderRepositoryBase: MoviesProviderRepositoryBase
 ) : ViewModel() {
+
+    private val moviesSource: MoviesPagingSource
 
     init {
         val argument = savedStateHandle.get<String>(Movies.sourceType).orEmpty()
         println("TEST $argument")
+        moviesSource = MoviesPagingSource(
+            moviesProviderRepositoryBase.get(
+                Movies.SourceType.values().first { it.type == argument }
+            )
+        )
     }
 
     private val viewModelState =

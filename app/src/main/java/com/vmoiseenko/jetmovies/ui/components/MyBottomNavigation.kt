@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.vmoiseenko.jetmovies.R
-import com.vmoiseenko.jetmovies.ui.navigation.*
+import com.vmoiseenko.jetmovies.ui.navigation.Account
+import com.vmoiseenko.jetmovies.ui.navigation.Favorites
+import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 import com.vmoiseenko.jetmovies.ui.theme.MoviePrimaryLightColor
 import com.vmoiseenko.jetmovies.ui.theme.MovieSecondaryLighterColor
@@ -26,7 +28,7 @@ import com.vmoiseenko.jetmovies.ui.theme.MovieSecondaryLighterColor
 @Composable
 fun MyBottomNavigation(
     currentDestination: String,
-    onItemClick: (destination: BottomBarDestination) -> Unit,
+    onItemClick: (destination: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     BottomNavigation(
@@ -35,7 +37,7 @@ fun MyBottomNavigation(
     ) {
 
         MoviesTabs.values().forEach { tab ->
-            val isSelected = tab.destination.route == currentDestination
+            val isSelected = tab.route == currentDestination
             BottomNavigationItem(
                 icon = {
                     Icon(
@@ -56,7 +58,7 @@ fun MyBottomNavigation(
                 },
                 selected = isSelected,
                 onClick = {
-                    onItemClick(tab.destination)
+                    onItemClick(tab.route)
                 }
             )
         }
@@ -73,26 +75,37 @@ enum class MoviesTabs(
     @StringRes val title: Int,
     val icon: ImageVector,
     val selectedIcon: ImageVector,
-    val destination: BottomBarDestination
+    val route: String
 ) {
-    MOVIES(R.string.placeholder_movies, Icons.Outlined.Movie, Icons.Filled.Movie, Movies),
-    TV_SHOWS(R.string.placeholder_tv_shows, Icons.Outlined.Tv, Icons.Filled.Tv, TvShows),
+    MOVIES(
+        R.string.placeholder_movies,
+        Icons.Outlined.Movie,
+        Icons.Filled.Movie,
+        Movies.getRouteWithArg(
+            Movies.SourceType.MOVIE
+        )
+    ),
+    TV_SHOWS(
+        R.string.placeholder_tv_shows, Icons.Outlined.Tv, Icons.Filled.Tv, Movies.getRouteWithArg(
+            Movies.SourceType.TV_SHOW
+        )
+    ),
     FAVORITES(
         R.string.placeholder_favorites,
         Icons.Outlined.FavoriteBorder,
         Icons.Filled.Favorite,
-        Favorites
+        Favorites.route
     ),
     SEARCH(
         R.string.placeholder_account,
         Icons.Outlined.AccountCircle,
         Icons.Filled.AccountCircle,
-        Account
+        Account.route
     );
 
     companion object {
         fun hasTab(route: String): Boolean {
-            return values().map { it.destination.route }.contains(route)
+            return values().map { it.route }.contains(route)
         }
     }
 

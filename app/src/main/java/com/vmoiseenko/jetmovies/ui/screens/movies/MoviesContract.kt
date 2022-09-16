@@ -11,9 +11,4 @@ interface MoviesContract {
         data class Movies(val movies: List<MovieItem>) : UiState()
         data class Error(val message: String) : UiState()
     }
-
-    enum class SourceType(val type: String) {
-        MOVIE("movie"),
-        TV_SHOW("tv_shows")
-    }
 }

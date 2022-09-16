@@ -6,12 +6,11 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.vmoiseenko.jetmovies.ui.components.MoviesTabs
 import com.vmoiseenko.jetmovies.ui.components.MyBottomNavigation
 import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import com.vmoiseenko.jetmovies.ui.navigation.MoviesNavHost
 import com.vmoiseenko.jetmovies.ui.navigation.currentDestination
-import com.vmoiseenko.jetmovies.ui.navigation.navigateSingleWithRestore
+import com.vmoiseenko.jetmovies.ui.navigation.navigateSingleTopTo
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 
 @Composable
@@ -23,12 +22,12 @@ fun MoviesApp() {
 
         Scaffold(
             bottomBar = {
-                if (MoviesTabs.hasTab(currentDestination)) {
+//                if (MoviesTabs.hasTab(currentDestination)) {
                     MyBottomNavigation(
                         currentDestination,
-                        { navController.navigateSingleWithRestore(it.route) }
+                        navController::navigateSingleTopTo
                     )
-                }
+//                }
             }
         ) { innerPadding ->
             MoviesNavHost(

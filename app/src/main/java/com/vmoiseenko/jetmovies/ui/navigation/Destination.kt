@@ -10,12 +10,25 @@ interface Destination {
 interface BottomBarDestination : Destination
 
 object Movies : BottomBarDestination {
-    override val route = "movies"
-    val sourceType = "sourceType"
-    val routeWithArgs = "${MovieDetails.route}/{${sourceType}}"
+    const val id = "movies"
+    const val sourceType = "source_type"
+    override val route = "${id}/{${sourceType}}"
+
     val arguments = listOf(
-        navArgument(sourceType) { type = NavType.StringType }
+        navArgument(sourceType) {
+            type = NavType.StringType;
+            defaultValue = SourceType.MOVIE.type
+        }
     )
+
+    enum class SourceType(val type: String) {
+        MOVIE("movie"),
+        TV_SHOW("tv_shows")
+    }
+
+    fun getRouteWithArg(sourceType: SourceType): String {
+        return "${id}/${sourceType.type}"
+    }
 }
 
 object TvShows : BottomBarDestination {
