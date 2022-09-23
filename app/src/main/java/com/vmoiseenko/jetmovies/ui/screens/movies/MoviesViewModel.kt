@@ -29,8 +29,8 @@ class MoviesViewModel @Inject constructor(
     private val moviesSource: MoviesPagingSource
 
     init {
-        val argument = savedStateHandle.get<String>(Movies.sourceType).orEmpty()
-        println("TEST $argument")
+        val argument = checkNotNull(savedStateHandle[Movies.sourceType])
+
         moviesSource = MoviesPagingSource(
             moviesProviderRepositoryBase.get(
                 Movies.SourceType.values().first { it.type == argument }

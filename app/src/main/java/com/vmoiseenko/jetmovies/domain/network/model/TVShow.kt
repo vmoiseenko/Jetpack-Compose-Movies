@@ -11,12 +11,12 @@ data class TVShow(
     @SerializedName(value = "first_air_date")
     var releaseDate: String,
     @SerializedName(value = "poster_path")
-    var posterPath: String,
+    var posterPath: String?,
     @SerializedName(value = "vote_average")
     var vote: Float
 
 ) {
-    fun imagePath(): String = Poster.W342.imagePath(posterPath)
+    fun imagePath(): String = Poster.W342.imagePath(posterPath ?: "")
 }
 
 

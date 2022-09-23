@@ -29,6 +29,10 @@ object Movies : BottomBarDestination {
     fun getRouteWithArg(sourceType: SourceType): String {
         return "${id}/${sourceType.type}"
     }
+
+    fun getRouteWithArg(value: String): String {
+        return "${id}/${value}"
+    }
 }
 
 object TvShows : BottomBarDestination {

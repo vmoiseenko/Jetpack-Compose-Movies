@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movies Compose</string>
+    <string name="app_name">Jet Movies</string>
     <string name="placeholder_search">Search</string>
     <string name="placeholder_movies">Movies</string>
     <string name="placeholder_tv_shows">TV Shows</string>
