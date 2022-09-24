@@ -19,7 +19,7 @@ data class Season(
     @SerializedName(value = "episode_count")
     var episodeCount: Int,
     @SerializedName(value = "poster_path")
-    var posterPath: Int,
+    var posterPath: String,
     @SerializedName(value = "season_number")
     var seasonNumber: Int
 )

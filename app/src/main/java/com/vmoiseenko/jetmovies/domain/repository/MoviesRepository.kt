@@ -2,17 +2,15 @@ package com.vmoiseenko.jetmovies.domain.repository
 
 import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.domain.dto.mapToItem
-import com.vmoiseenko.jetmovies.domain.network.model.MovieCredits
-import com.vmoiseenko.jetmovies.domain.network.model.MovieDetails
-import com.vmoiseenko.jetmovies.domain.network.model.Movies
-import com.vmoiseenko.jetmovies.domain.network.model.Person
+import com.vmoiseenko.jetmovies.domain.network.model.*
 import com.vmoiseenko.jetmovies.domain.network.proxy.MoviesClient
 import javax.inject.Inject
 
 interface MoviesRepository {
     suspend fun search(query: String): Result<Movies>
     suspend fun getMovies(page: Int): Result<Pair<Int, List<MovieItem>>>
-    suspend fun getDetails(movieId: Int): Result<MovieDetails>
+    suspend fun getMovieDetails(movieId: Int): Result<MovieDetails>
+    suspend fun getTvShowDetails(tvId: Int): Result<TVShowDetails>
     suspend fun getCredits(movieId: Int): Result<MovieCredits>
     suspend fun getPerson(id: Int): Result<Person>
 }
@@ -29,7 +27,7 @@ class MoviesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDetails(movieId: Int): Result<MovieDetails> {
+    override suspend fun getMovieDetails(movieId: Int): Result<MovieDetails> {
         return moviesClient.getMovieDetails(movieId)
     }
 
@@ -43,5 +41,9 @@ class MoviesRepositoryImpl @Inject constructor(
 
     override suspend fun getPerson(id: Int): Result<Person> {
         return moviesClient.getPerson(id)
+    }
+
+    override suspend fun getTvShowDetails(tvId: Int): Result<TVShowDetails> {
+        return moviesClient.getTvShowDetails(tvId)
     }
 }

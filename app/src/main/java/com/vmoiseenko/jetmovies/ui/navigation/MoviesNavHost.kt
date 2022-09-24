@@ -10,6 +10,7 @@ import com.vmoiseenko.jetmovies.ui.screens.artist.ActorScreen
 import com.vmoiseenko.jetmovies.ui.screens.details.MovieDetailsScreen
 import com.vmoiseenko.jetmovies.ui.screens.favorites.FavoritesScreen
 import com.vmoiseenko.jetmovies.ui.screens.movies.MoviesScreen
+import com.vmoiseenko.jetmovies.ui.screens.tv.TvShowDetailsScreen
 
 @Composable
 fun MoviesNavHost(
@@ -25,9 +26,16 @@ fun MoviesNavHost(
             route = Movies.route,
             arguments = Movies.arguments
         ) {
+
+            val argument = checkNotNull(it.arguments?.getString(Movies.sourceType))
+
             MoviesScreen(
-                onMovieClick = {
-                    navController.navigateToMovieDetails(it)
+                onMovieClick = { id ->
+                    if (argument == Movies.SourceType.MOVIE.type) {
+                        navController.navigateToMovieDetails(id)
+                    } else {
+                        navController.navigateToTvShowDetails(id)
+                    }
                 }
             )
         }
@@ -46,6 +54,12 @@ fun MoviesNavHost(
             MovieDetailsScreen(movieId, {
                 navController.navigateToActorScreen(it)
             })
+        }
+        composable(
+            route = TvShowDetails.routeWithArgs,
+            arguments = TvShowDetails.arguments
+        ) {
+            TvShowDetailsScreen()
         }
         composable(
             route = ActorScreen.routeWithArgs,

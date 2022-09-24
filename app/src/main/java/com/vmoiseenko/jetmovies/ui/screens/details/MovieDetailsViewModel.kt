@@ -36,7 +36,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun getMovies(id: Int) {
         viewModelScope.launch {
-            val detailsFlow = flowOf(moviesRepository.getDetails(id))
+            val detailsFlow = flowOf(moviesRepository.getMovieDetails(id))
             val creditsFlow = flowOf(moviesRepository.getCredits(id))
             val isFavorite = favoriteRepository.isFavorite(id)
 

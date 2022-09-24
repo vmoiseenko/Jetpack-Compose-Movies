@@ -53,6 +53,12 @@ fun NavHostController.navigateToMovieDetails(
     navigateSingleTopTo("${MovieDetails.route}/$movieId")
 }
 
+fun NavHostController.navigateToTvShowDetails(
+    tvId: Int
+) {
+    navigateSingleTopTo(TvShowDetails.getRouteWithArgs(tvId))
+}
+
 fun NavHostController.navigateToActorScreen(
     actorId: Int
 ) {

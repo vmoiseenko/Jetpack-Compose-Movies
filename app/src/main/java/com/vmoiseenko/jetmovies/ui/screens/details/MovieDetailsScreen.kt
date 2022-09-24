@@ -9,7 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Surface
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -201,20 +204,6 @@ fun MovieDetailsSuccess(
                 onCharacterSelected = { onUiClickEvent(Artist(it)) }
             )
         }
-    }
-}
-
-@Composable
-fun LoadingState(
-    modifier: Modifier = Modifier
-) {
-    Box(modifier.fillMaxSize()) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colors.onSurface,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 24.dp)
-        )
     }
 }
 

@@ -12,7 +12,7 @@ interface BottomBarDestination : Destination
 object Movies : BottomBarDestination {
     const val id = "movies"
     const val sourceType = "source_type"
-    override val route = "${id}/{${sourceType}}"
+    override val route = "$id/{$sourceType}"
 
     val arguments = listOf(
         navArgument(sourceType) {
@@ -27,16 +27,12 @@ object Movies : BottomBarDestination {
     }
 
     fun getRouteWithArg(sourceType: SourceType): String {
-        return "${id}/${sourceType.type}"
+        return getRouteWithArg(sourceType.type)
     }
 
     fun getRouteWithArg(value: String): String {
-        return "${id}/${value}"
+        return "$id/$value"
     }
-}
-
-object TvShows : BottomBarDestination {
-    override val route = "tv_shows"
 }
 
 object Favorites : BottomBarDestination {
@@ -50,16 +46,29 @@ object Account : BottomBarDestination {
 object MovieDetails : Destination {
     override val route = "movieDetails"
     const val movieId = "movie_id"
-    val routeWithArgs = "${route}/{${movieId}}"
+    val routeWithArgs = "$route/{$movieId}"
     val arguments = listOf(
         navArgument(movieId) { type = NavType.IntType }
     )
 }
 
+object TvShowDetails : Destination {
+    override val route = "tvShowDetails"
+    const val tvId = "tv_id"
+    val routeWithArgs = "$route/{$tvId}"
+    val arguments = listOf(
+        navArgument(tvId) { type = NavType.IntType }
+    )
+
+    fun getRouteWithArgs(tvId: Int): String {
+        return "$route/$tvId"
+    }
+}
+
 object ActorScreen : Destination {
     override val route = "actorScreen"
     const val actorId = "actor_id"
-    val routeWithArgs = "${route}/{${actorId}}"
+    val routeWithArgs = "$route/{$actorId}"
     val arguments = listOf(
         navArgument(actorId) { type = NavType.IntType }
     )
