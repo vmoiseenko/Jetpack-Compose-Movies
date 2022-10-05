@@ -8,12 +8,11 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.vmoiseenko.jetmovies.domain.network.model.Movie
-import java.time.LocalDate
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 
 @Composable
 fun MoviesGridList(
-    list: List<Movie>,
+    list: List<MovieItem>,
     onMovieClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -29,10 +28,7 @@ fun MoviesGridList(
             key = { it.id }
         ) { movie ->
             MovieCard(
-                title = movie.title,
-                year = LocalDate.parse(movie.releaseDate).year.toString(),
-                rating = movie.vote,
-                imageUrl = movie.imagePath(),
+                movie = movie,
                 onClickListener = { onMovieClick(movie.id) }
             )
         }

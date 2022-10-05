@@ -9,7 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Surface
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -205,20 +208,6 @@ fun MovieDetailsSuccess(
 }
 
 @Composable
-fun LoadingState(
-    modifier: Modifier = Modifier
-) {
-    Box(modifier.fillMaxSize()) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colors.onSurface,
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 24.dp)
-        )
-    }
-}
-
-@Composable
 fun InfoRow(data: List<Pair<String, String>>, state: LazyListState, modifier: Modifier = Modifier) {
     LazyRow(
         state = state,
@@ -239,7 +228,7 @@ private fun List<Crew>.mapCrew(vararg job: String) =
 @Preview
 @Composable
 fun PreviewMovieDetailsScreen() {
-    JetMoviesTheme() {
+    JetMoviesTheme {
         Surface {
             MovieDetailsSuccess(
                 MovieDetailsContract.UiState.Success(
@@ -252,6 +241,7 @@ fun PreviewMovieDetailsScreen() {
                         runtime = 126,
                         releaseDate = "2022-07-06",
                         backdropPath = "",
+                        posterPath = "",
                         vote = 6.769f
                     ),
                     credits = MovieCredits(

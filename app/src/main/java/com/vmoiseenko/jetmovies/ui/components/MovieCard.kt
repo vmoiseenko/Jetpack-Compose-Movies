@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.vmoiseenko.jetmovies.R
+import com.vmoiseenko.jetmovies.domain.dto.MovieItem
 import com.vmoiseenko.jetmovies.ui.theme.BlackTransparent
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 import com.vmoiseenko.jetmovies.ui.theme.cardShape
@@ -80,6 +82,22 @@ fun MovieCard(
                 }
         )
     }
+}
+
+@Composable
+fun MovieCard(
+    movie: MovieItem,
+    onClickListener: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    MovieCard(
+        title = movie.title,
+        year = movie.year ?: stringResource(id = R.string.movies_details_not_available),
+        rating = movie.rating,
+        imageUrl = movie.imageUrl,
+        onClickListener = { onClickListener(movie.id) },
+        modifier = modifier
+    )
 }
 
 @Composable

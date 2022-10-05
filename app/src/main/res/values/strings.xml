@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Movies Compose</string>
+    <string name="app_name">Jet Movies</string>
     <string name="placeholder_search">Search</string>
     <string name="placeholder_movies">Movies</string>
     <string name="placeholder_tv_shows">TV Shows</string>
@@ -25,6 +25,8 @@
     <string name="actor.show_less">Show less</string>
 
     <string name="movies.offline">Your network is unavailable. Check your data or wifi connection.</string>
+
+    <string name="favorite.empty">You have no favorite movies. Once you add it, you will see it here!</string>
 
     <string name="account.welcome">Welcome %s</string>
     <string name="account.login_now">Login Now</string>

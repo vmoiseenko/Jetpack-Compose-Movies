@@ -52,4 +52,14 @@ interface MoviesClient {
     suspend fun getPerson(
         @Path("personId") personId: Int
     ): Result<Person>
+
+    @GET("tv/popular")
+    suspend fun getTvShows(
+        @Query("page") page: Int
+    ): Result<TVShows>
+
+    @GET("tv/{tvId}")
+    suspend fun getTvShowDetails(
+        @Path("tvId") tvId: Int
+    ): Result<TVShowDetails>
 }

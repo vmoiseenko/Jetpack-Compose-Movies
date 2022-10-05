@@ -8,7 +8,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 @Composable
 fun NavHostController.currentDestination(): String? {
     val currentBackStack by currentBackStackEntryAsState()
-    return currentBackStack?.destination?.route
+    return when (currentBackStack?.destination?.route) {
+        Movies.route -> {
+            val argument = checkNotNull(currentBackStack?.arguments?.getString(Movies.sourceType))
+            Movies.getRouteWithArg(argument)
+        }
+        else -> currentBackStack?.destination?.route
+    }
 }
 
 fun NavHostController.navigateSingleWithRestore(route: String) {
@@ -30,6 +36,11 @@ fun NavHostController.navigateSingleWithRestore(route: String) {
     }
 }
 
+fun NavHostController.navigateTo(route: String) =
+    this.navigate(route) {
+        restoreState = true
+    }
+
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) {
         launchSingleTop = true
@@ -40,6 +51,12 @@ fun NavHostController.navigateToMovieDetails(
     movieId: Int
 ) {
     navigateSingleTopTo("${MovieDetails.route}/$movieId")
+}
+
+fun NavHostController.navigateToTvShowDetails(
+    tvId: Int
+) {
+    navigateSingleTopTo(TvShowDetails.getRouteWithArgs(tvId))
 }
 
 fun NavHostController.navigateToActorScreen(

@@ -1,5 +1,6 @@
 package com.vmoiseenko.jetmovies.ui.screens
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -10,7 +11,7 @@ import com.vmoiseenko.jetmovies.ui.components.MyBottomNavigation
 import com.vmoiseenko.jetmovies.ui.navigation.Movies
 import com.vmoiseenko.jetmovies.ui.navigation.MoviesNavHost
 import com.vmoiseenko.jetmovies.ui.navigation.currentDestination
-import com.vmoiseenko.jetmovies.ui.navigation.navigateSingleWithRestore
+import com.vmoiseenko.jetmovies.ui.navigation.navigateTo
 import com.vmoiseenko.jetmovies.ui.theme.JetMoviesTheme
 
 @Composable
@@ -25,14 +26,19 @@ fun MoviesApp() {
                 if (MoviesTabs.hasTab(currentDestination)) {
                     MyBottomNavigation(
                         currentDestination,
-                        { navController.navigateSingleWithRestore(it.route) }
+                        {
+                            if (currentDestination != it)
+                                navController.navigateTo(it)
+                        }
                     )
                 }
             }
         ) { innerPadding ->
             MoviesNavHost(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
             )
         }
     }
